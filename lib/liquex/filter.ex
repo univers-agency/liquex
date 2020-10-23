@@ -6,6 +6,8 @@ defmodule Liquex.Filter do
   @type filter_t :: {:filter, [...]}
   @callback apply(any, filter_t, map) :: any
 
+  alias Liquex.Context
+
   defmacro __using__(_) do
     quote do
       @behaviour Liquex.Filter
@@ -387,7 +389,7 @@ defmodule Liquex.Filter do
       [1, 2]
   """
   @spec map([any], term, Context.t()) :: [any]
-  def map(arr, key, _), do: Enum.map(arr, &Map.get(&1, key, nil))
+  def map(arr, key, _), do: Enum.map(arr, &Liquex.Indifferent.get(&1, key, nil))
 
   @doc """
   Subtracts a number from another number.
