@@ -3,6 +3,7 @@ defmodule Liquex.Expression do
 
   alias Liquex.Argument
   alias Liquex.Context
+  alias Liquex.Protocol
 
   @spec eval(maybe_improper_list | {:field, any} | {:literal, any}, Context.t()) :: any
   def eval([left: left, op: op, right: right], %Context{} = context) do
@@ -43,7 +44,8 @@ defmodule Liquex.Expression do
   defp do_eval({left, :contains, right}) when is_binary(left) and is_binary(right),
     do: String.contains?(left, right)
 
-  defp do_eval({left, op, right}), do: apply(Kernel, op, [left, right])
+  defp do_eval({left, op, right}), do:
+    apply(Kernel, op, [Protocol.render(left), Protocol.render(right)])
 
   # Truthy values
   defp do_eval(nil), do: false

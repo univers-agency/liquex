@@ -3,6 +3,7 @@ defmodule Liquex.Render.Object do
 
   alias Liquex.Argument
   alias Liquex.Context
+  alias Liquex.Protocol
   alias Liquex.Render.Filter
 
   @behaviour Liquex.Render
@@ -20,6 +21,6 @@ defmodule Liquex.Render.Object do
       |> Argument.eval(context)
       |> Filter.apply_filters(filters, context)
 
-    {to_string(result), context}
+    {Protocol.render(result), context}
   end
 end
